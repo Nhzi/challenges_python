@@ -1,6 +1,59 @@
 import random
 import time
 import requests
+import string
+from rich.console import Console
+
+def animate_hangman_intro_single_line():
+    """
+    Animates 'HANGMAN' on a single line with a flickering slot-machine effect.
+    """
+    console = Console()
+    target_word = "Let's play HANGMAN!"
+
+    # This will hold the parts of the word that are already "locked in"
+    revealed_word_parts = []
+
+    # 1. Loop through each letter we need to reveal (H, A, N, G, M, A, N)
+    for i in range(len(target_word)):
+        start_time = time.time()
+
+        # 2. Flicker random characters in the current position for a short duration
+        while time.time() - start_time < 0.4: # Flicker for 0.4 seconds
+            # The string to print: already revealed letters + the flickering character
+            flickering_part = random.choice(string.ascii_uppercase + "#$%*")
+
+            # Join the revealed parts and add the new flickering character
+            # The [1:] removes the space that join would add at the start
+            display_text = "".join(revealed_word_parts) + f"[bold yellow]{flickering_part}[/bold yellow]"
+
+            # The key is end='\r'. This returns the cursor to the start of the line.
+            console.print(display_text, end='\r')
+            time.sleep(0.05)
+
+        # 3. Lock in the correct letter and add it to our list of revealed parts
+        correct_letter = target_word[i]
+        revealed_word_parts.append(f"[bold bright_green]{correct_letter}[/bold bright_green]")
+
+        # Display the line with the newly locked-in letter
+        final_display_text = "".join(revealed_word_parts)
+        console.print(final_display_text, end='\r')
+        time.sleep(0.15) # Pause briefly after revealing a letter
+
+    # 4. After the loop, print a newline to move to the next line for good.
+    print()
+    print() # Add an extra line for spacing
+    console.print("[cyan]Welcome to the classic word guessing game![/cyan]")
+    console.print("[dim]Press Enter to start...[/dim]")
+    input()
+    console.clear()
+
+
+# --- To run the intro ---
+if __name__ == "__main__":
+    animate_hangman_intro_single_line()
+    print("Game starts now!")
+    # Your game logic follows here...
 
 def get_word_clue(word):
     """Fetches a clue for a word from the Free Dictionary API."""

@@ -103,8 +103,23 @@ easy_words = [
 # --- Let's try it out! ---
 # 1. Choose a random word from the list
 random_word = random.choice(easy_words)
-print(f"The chosen word is: '{random_word}'")
-
-# 2. Get the clue for that word
+lengthword = len(random_word)
 clue = get_word_clue(random_word)
 print(clue)
+print(f"It is also a {lenghtword} letter word.")
+
+human_choice = input("Guess your first letter: ").lower()
+print(human_choice)
+
+
+#print(lengthword)
+# 2. Get the clue for that word
+def design():
+    for i in random_word:
+        if human_choice == i:
+            print("you indeed got a letter")
+        else:
+            print("Paywall...")
+
+
+#design()
